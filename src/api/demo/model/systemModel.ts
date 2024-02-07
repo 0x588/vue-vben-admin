@@ -19,7 +19,7 @@ export type DeptParams = {
 };
 
 export type MenuParams = {
-  menuName?: string;
+  name?: string;
   status?: string;
 };
 

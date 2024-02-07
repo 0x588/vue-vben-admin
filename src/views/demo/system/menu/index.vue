@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable" @fetch-success="onFetchSuccess">
       <template #toolbar>
-        <a-button v-auth="['system:menu:create']" type="primary"  @click="handleCreate">
+        <a-button  type="primary"  @click="handleCreate">
           新建菜单
         </a-button>
         <a-button @click="expandAll">

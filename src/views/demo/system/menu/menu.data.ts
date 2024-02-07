@@ -1,5 +1,7 @@
 import { BasicColumn, FormSchema, useRender } from '@/components/Table';
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
+import { listSimpleMenus } from '@/api/sys/menu'
+import { SystemMenuTypeEnum } from '@/enums/systemEnum'
 
 export const columns: BasicColumn[] = [
   {
@@ -53,13 +55,9 @@ export const columns: BasicColumn[] = [
   },
 ];
 
-const isDir = (type: string) => type === '0';
-const isMenu = (type: string) => type === '1';
-const isButton = (type: string) => type === '2';
-
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'menuName',
+    field: 'name',
     label: '菜单名称',
     component: 'Input',
     colProps: { span: 8 },
@@ -69,10 +67,7 @@ export const searchFormSchema: FormSchema[] = [
     label: '状态',
     component: 'Select',
     componentProps: {
-      options: [
-        { label: '启用', value: '0' },
-        { label: '停用', value: '1' },
-      ],
+      options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
     },
     colProps: { span: 8 },
   },
@@ -80,120 +75,122 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
-    field: 'type',
-    label: '菜单类型',
-    component: 'RadioButtonGroup',
-    defaultValue: '0',
+    label: '编号',
+    field: 'id',
+    show: false,
+    component: 'Input',
+  },
+  {
+    label: '上级菜单',
+    field: 'parentId',
+    required: true,
+    component: 'ApiTreeSelect',
     componentProps: {
-      options: getDictOptions(DICT_TYPE.COMMON_STATUS),
+      api: () => listSimpleMenus(),
+      parentLabel: '主类目',
+      handleTree: 'id',
+    },
+  },
+  {
+    label: '菜单类型',
+    field: 'type',
+    required: true,
+    defaultValue: '0',
+    component: 'RadioButtonGroup',
+    componentProps: {
+      options: getDictOptions(DICT_TYPE.SYSTEM_MENU_TYPE),
     },
     colProps: { lg: 24, md: 24 },
   },
   {
-    field: 'menuName',
     label: '菜单名称',
+    field: 'name',
+    required: true,
     component: 'Input',
-    required: true,
-  },
-
-  {
-    field: 'parentMenu',
-    label: '上级菜单',
-    component: 'TreeSelect',
-    componentProps: {
-      fieldNames: {
-        label: 'menuName',
-        key: 'id',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
-    },
-  },
-
-  {
-    field: 'orderNo',
-    label: '排序',
-    component: 'InputNumber',
-    required: true,
   },
   {
+    label: '菜单图标',
     field: 'icon',
-    label: '图标',
     component: 'IconPicker',
-    required: true,
-    ifShow: ({ values }) => !isButton(values.type),
+    ifShow: ({ values }) => values.type !== SystemMenuTypeEnum.BUTTON,
   },
-
   {
-    field: 'routePath',
+    label: '显示排序',
+    field: 'sort',
+    required: true,
+    component: 'InputNumber',
+    defaultValue: 0,
+  },
+  {
     label: '路由地址',
-    component: 'Input',
+    field: 'path',
     required: true,
-    ifShow: ({ values }) => !isButton(values.type),
-  },
-  {
-    field: 'component',
-    label: '组件路径',
     component: 'Input',
-    ifShow: ({ values }) => isMenu(values.type),
+    helpMessage: '访问的路由地址，如：`user`。如需外网地址时，则以 `http(s)://` 开头',
+    ifShow: ({ values }) => values.type !== SystemMenuTypeEnum.BUTTON,
   },
   {
-    field: 'permission',
     label: '权限标识',
+    field: 'permission',
     component: 'Input',
-    ifShow: ({ values }) => !isDir(values.type),
+    helpMessage: 'Controller 方法上的权限字符，如：@PreAuthorize(`@ss.hasPermission("system:user:list")`)',
+    ifShow: ({ values }) => values.type !== SystemMenuTypeEnum.DIR,
   },
   {
+    label: '组件路径',
+    field: 'component',
+    component: 'Input',
+    helpMessage: '例如：system/user/index',
+    ifShow: ({ values }) => values.type === SystemMenuTypeEnum.MENU,
+  },
+  {
+    label: '组件名称',
+    field: 'componentName',
+    component: 'Input',
+    helpMessage: '例如：SystemUser',
+    ifShow: ({ values }) => values.type === SystemMenuTypeEnum.MENU,
+  },
+  {
+    label: '菜单状态',
     field: 'status',
-    label: '状态',
+    required: true,
     component: 'RadioButtonGroup',
-    defaultValue: '0',
+    helpMessage: '选择停用时，路由将不会出现在侧边栏，也不能被访问',
     componentProps: {
-      options: [
-        { label: '启用', value: '0' },
-        { label: '禁用', value: '1' },
-      ],
+      options: getDictOptions(DICT_TYPE.COMMON_STATUS),
     },
   },
   {
-    field: 'isExt',
-    label: '是否外链',
-    component: 'RadioButtonGroup',
-    defaultValue: '0',
+    label: '显示状态',
+    field: 'visible',
+    component: 'Switch',
     componentProps: {
-      options: [
-        { label: '否', value: '0' },
-        { label: '是', value: '1' },
-      ],
+      checkedChildren: '显示',
+      unCheckedChildren: '隐藏',
     },
-    ifShow: ({ values }) => !isButton(values.type),
+    helpMessage: '选择隐藏时，路由将不会出现在侧边栏，但仍然可以访问',
+    ifShow: ({ values }) => values.type !== SystemMenuTypeEnum.BUTTON,
   },
-
   {
-    field: 'keepalive',
+    label: '总是显示',
+    field: 'alwaysShow',
+    component: 'Switch',
+    componentProps: {
+      checkedChildren: '显示',
+      unCheckedChildren: '隐藏',
+    },
+    helpMessage: '选择不是时，当该菜单只有一个子菜单时，不展示自己，直接展示子菜单',
+    ifShow: ({ values }) => values.type !== SystemMenuTypeEnum.BUTTON,
+  },
+  {
     label: '是否缓存',
-    component: 'RadioButtonGroup',
-    defaultValue: '0',
+    field: 'keepAlive',
+    component: 'Switch',
     componentProps: {
-      options: [
-        { label: '否', value: '0' },
-        { label: '是', value: '1' },
-      ],
+      checkedChildren: '缓存',
+      unCheckedChildren: '不缓存',
     },
-    ifShow: ({ values }) => isMenu(values.type),
+    helpMessage: '选择缓存时，则会被 `keep-alive` 缓存，必须填写「组件名称」字段',
+    ifShow: ({ values }) => values.type === SystemMenuTypeEnum.MENU,
   },
-
-  {
-    field: 'show',
-    label: '是否显示',
-    component: 'RadioButtonGroup',
-    defaultValue: '0',
-    componentProps: {
-      options: [
-        { label: '是', value: '0' },
-        { label: '否', value: '1' },
-      ],
-    },
-    ifShow: ({ values }) => !isButton(values.type),
-  },
-];
+]
