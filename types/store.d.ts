@@ -58,3 +58,8 @@ export interface TableSetting {
   columns: Recordable<Nullable<Array<ColumnOptionsType>>>;
   showRowSelection: Recordable<Nullable<boolean>>;
 }
+
+export interface DictState {
+  dictMap: Map<string, any>
+  isSetDict: boolean
+}

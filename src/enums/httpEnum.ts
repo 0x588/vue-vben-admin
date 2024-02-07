@@ -2,9 +2,11 @@
  * @description: Request result set
  */
 export enum ResultEnum {
-  SUCCESS = 0,
-  ERROR = -1,
+  SUCCESS = 200,
+  ERROR = 1000,
   TIMEOUT = 401,
+  UNAUTHORIZED = 401,
+  INTERNAL_SERVER_ERROR = 500,
   TYPE = 'success',
 }
 

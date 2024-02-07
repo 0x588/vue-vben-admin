@@ -1,5 +1,7 @@
 // token key
-export const TOKEN_KEY = 'TOKEN__';
+export const ACCESS_TOKEN_KEY = 'ACCESS_TOKEN__'
+
+export const REFRESH_TOKEN_KEY = 'REFRESH_TOKEN__'
 
 export const LOCALE_KEY = 'LOCALE__';
 
@@ -8,6 +10,8 @@ export const USER_INFO_KEY = 'USER__INFO__';
 
 // role info key
 export const ROLES_KEY = 'ROLES__KEY__';
+
+export const DICT_KEY = 'DICT__KEY__'
 
 // project config key
 export const PROJ_CFG_KEY = 'PROJ__CFG__KEY__';

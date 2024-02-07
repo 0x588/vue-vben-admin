@@ -13,7 +13,7 @@ export default {
       // The number field name of each page displayed in the background
       sizeField: 'pageSize',
       // Field name of the form data returned by the interface
-      listField: 'items',
+      listField: 'list',
       // Total number of tables returned by the interface field name
       totalField: 'total',
     },
@@ -22,7 +22,7 @@ export default {
     // Default display quantity on one page
     defaultPageSize: 10,
     // Default Size
-    defaultSize: 'middle',
+    defaultSize: 'small',
     // Custom general sort function
     defaultSortFn: (sortInfo: SorterResult) => {
       const { field, order } = sortInfo;
@@ -81,7 +81,7 @@ export default {
       proxyConfig: {
         form: true,
         props: {
-          result: 'items',
+          result: 'list',
           total: 'total',
         },
       },

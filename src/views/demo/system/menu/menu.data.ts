@@ -1,21 +1,27 @@
-import { BasicColumn, FormSchema } from '@/components/Table';
-import { h } from 'vue';
-import { Tag } from 'ant-design-vue';
-import Icon from '@/components/Icon/Icon.vue';
+import { BasicColumn, FormSchema, useRender } from '@/components/Table';
+import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 
 export const columns: BasicColumn[] = [
   {
     title: '菜单名称',
-    dataIndex: 'menuName',
+    dataIndex: 'name',
     width: 200,
     align: 'left',
+  },
+  {
+    title: '菜单类型',
+    dataIndex: 'type',
+    width: 80,
+    customRender: ({ text }) => {
+      return useRender.renderDict(text, DICT_TYPE.SYSTEM_MENU_TYPE)
+    },
   },
   {
     title: '图标',
     dataIndex: 'icon',
     width: 50,
     customRender: ({ record }) => {
-      return h(Icon, { icon: record.icon });
+      return useRender.renderIcon(record.icon)
     },
   },
   {
@@ -24,30 +30,26 @@ export const columns: BasicColumn[] = [
     width: 180,
   },
   {
+  title: '路由地址',
+    dataIndex: 'path',
+    width:100,
+  },
+  {
     title: '组件',
     dataIndex: 'component',
   },
   {
     title: '排序',
-    dataIndex: 'orderNo',
+    dataIndex: 'sort',
     width: 50,
   },
   {
     title: '状态',
     dataIndex: 'status',
     width: 80,
-    customRender: ({ record }) => {
-      const status = record.status;
-      const enable = ~~status === 0;
-      const color = enable ? 'green' : 'red';
-      const text = enable ? '启用' : '停用';
-      return h(Tag, { color: color }, () => text);
+    customRender: ({text  }) => {
+      return useRender.renderDict(text, DICT_TYPE.COMMON_STATUS)
     },
-  },
-  {
-    title: '创建时间',
-    dataIndex: 'createTime',
-    width: 180,
   },
 ];
 
@@ -83,11 +85,7 @@ export const formSchema: FormSchema[] = [
     component: 'RadioButtonGroup',
     defaultValue: '0',
     componentProps: {
-      options: [
-        { label: '目录', value: '0' },
-        { label: '菜单', value: '1' },
-        { label: '按钮', value: '2' },
-      ],
+      options: getDictOptions(DICT_TYPE.COMMON_STATUS),
     },
     colProps: { lg: 24, md: 24 },
   },

@@ -3,7 +3,8 @@ import type { GlobConfig } from '#/config';
 import { getAppEnvConfig } from '@/utils/env';
 
 export const useGlobSetting = (): Readonly<GlobConfig> => {
-  const { VITE_GLOB_APP_TITLE, VITE_GLOB_API_URL, VITE_GLOB_API_URL_PREFIX, VITE_GLOB_UPLOAD_URL } =
+  const { VITE_GLOB_APP_TITLE, VITE_GLOB_API_URL, VITE_GLOB_API_URL_PREFIX, VITE_GLOB_UPLOAD_URL,     VITE_GLOB_APP_CAPTCHA_ENABLE,
+  } =
     getAppEnvConfig();
 
   // Take global configuration
@@ -13,6 +14,7 @@ export const useGlobSetting = (): Readonly<GlobConfig> => {
     shortName: VITE_GLOB_APP_TITLE.replace(/\s/g, '_').replace(/-/g, '_'),
     urlPrefix: VITE_GLOB_API_URL_PREFIX,
     uploadUrl: VITE_GLOB_UPLOAD_URL,
+    captchaEnable: VITE_GLOB_APP_CAPTCHA_ENABLE,
   };
   return glob as Readonly<GlobConfig>;
 };

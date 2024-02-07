@@ -3,6 +3,7 @@ import type { Router, RouteRecordRaw } from 'vue-router';
 import { usePermissionStoreWithOut } from '@/store/modules/permission';
 
 import { PageEnum } from '@/enums/pageEnum';
+import { useDictStoreWithOut } from '@/store/modules/dict'
 import { useUserStoreWithOut } from '@/store/modules/user';
 
 import { PAGE_NOT_FOUND_ROUTE } from '@/router/routes/basic';
@@ -16,6 +17,7 @@ const ROOT_PATH = RootRoute.path;
 const whitePathList: PageEnum[] = [LOGIN_PATH];
 
 export function createPermissionGuard(router: Router) {
+  const dictStore = useDictStoreWithOut()
   const userStore = useUserStoreWithOut();
   const permissionStore = usePermissionStoreWithOut();
   router.beforeEach(async (to, from, next) => {
@@ -29,7 +31,7 @@ export function createPermissionGuard(router: Router) {
       return;
     }
 
-    const token = userStore.getToken;
+    const token = userStore.getAccessToken;
 
     // Whitelist can be directly entered
     if (whitePathList.includes(to.path as PageEnum)) {
@@ -80,6 +82,9 @@ export function createPermissionGuard(router: Router) {
       next(userStore.getUserInfo.homePath || PageEnum.BASE_HOME);
       return;
     }
+
+    if (!dictStore.getIsSetDict)
+      await dictStore.setDictMap()
 
     // get userinfo while last fetch time is empty
     if (userStore.getLastUpdateTime === 0) {

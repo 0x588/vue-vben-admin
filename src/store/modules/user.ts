@@ -1,13 +1,12 @@
-import type { UserInfo } from '#/store';
 import type { ErrorMessageMode } from '#/axios';
 import { defineStore } from 'pinia';
 import { store } from '@/store';
 import { RoleEnum } from '@/enums/roleEnum';
 import { PageEnum } from '@/enums/pageEnum';
-import { ROLES_KEY, TOKEN_KEY, USER_INFO_KEY } from '@/enums/cacheEnum';
+import { ROLES_KEY, ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY,  USER_INFO_KEY } from '@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '@/utils/auth';
-import { GetUserInfoModel, LoginParams } from '@/api/sys/model/userModel';
-import { doLogout, getUserInfo, loginApi } from '@/api/sys/user';
+import {GetUserInfoModel, LoginParams, SmsLoginParams} from '@/api/sys/model/userModel';
+import {doLogout, getUserInfo, loginApi, smsLogin} from '@/api/sys/user';
 import { useI18n } from '@/hooks/web/useI18n';
 import { useMessage } from '@/hooks/web/useMessage';
 import { router } from '@/router';
@@ -18,8 +17,9 @@ import { isArray } from '@/utils/is';
 import { h } from 'vue';
 
 interface UserState {
-  userInfo: Nullable<UserInfo>;
-  token?: string;
+  userInfo: Nullable<GetUserInfoModel>;
+  accessToken?: string
+  refreshToken?: string
   roleList: RoleEnum[];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
@@ -31,7 +31,8 @@ export const useUserStore = defineStore({
     // user info
     userInfo: null,
     // token
-    token: undefined,
+    accessToken: undefined,
+    refreshToken: undefined,
     // roleList
     roleList: [],
     // Whether the login expired
@@ -40,11 +41,14 @@ export const useUserStore = defineStore({
     lastUpdateTime: 0,
   }),
   getters: {
-    getUserInfo(state): UserInfo {
-      return state.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
+    getUserInfo(state): GetUserInfoModel {
+      return state.userInfo || getAuthCache<GetUserInfoModel>(USER_INFO_KEY) || {};
     },
-    getToken(state): string {
-      return state.token || getAuthCache<string>(TOKEN_KEY);
+    getAccessToken(state): string {
+      return state.accessToken || getAuthCache<string>(ACCESS_TOKEN_KEY)
+    },
+    getRefreshToken(state): string {
+      return state.refreshToken || getAuthCache<string>(REFRESH_TOKEN_KEY)
     },
     getRoleList(state): RoleEnum[] {
       return state.roleList.length > 0 ? state.roleList : getAuthCache<RoleEnum[]>(ROLES_KEY);
@@ -57,15 +61,19 @@ export const useUserStore = defineStore({
     },
   },
   actions: {
-    setToken(info: string | undefined) {
-      this.token = info ? info : ''; // for null or undefined value
-      setAuthCache(TOKEN_KEY, info);
+    setAccessToken(info: string | undefined) {
+      this.accessToken = info || '' // for null or undefined value
+      setAuthCache(ACCESS_TOKEN_KEY, info)
+    },
+    setRefreshToken(info: string | undefined) {
+      this.refreshToken = info || '' // for null or undefined value
+      setAuthCache(REFRESH_TOKEN_KEY, info)
     },
     setRoleList(roleList: RoleEnum[]) {
       this.roleList = roleList;
       setAuthCache(ROLES_KEY, roleList);
     },
-    setUserInfo(info: UserInfo | null) {
+    setUserInfo(info: GetUserInfoModel | null) {
       this.userInfo = info;
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(USER_INFO_KEY, info);
@@ -75,7 +83,7 @@ export const useUserStore = defineStore({
     },
     resetState() {
       this.userInfo = null;
-      this.token = '';
+      this.accessToken = '';
       this.roleList = [];
       this.sessionTimeout = false;
     },
@@ -91,17 +99,37 @@ export const useUserStore = defineStore({
       try {
         const { goHome = true, mode, ...loginParams } = params;
         const data = await loginApi(loginParams, mode);
-        const { token } = data;
+        const { accessToken, refreshToken } = data
 
         // save token
-        this.setToken(token);
+        this.setAccessToken(accessToken)
+        this.setRefreshToken(refreshToken)
         return this.afterLoginAction(goHome);
       } catch (error) {
         return Promise.reject(error);
       }
     },
+    async smsLogin(
+        params: SmsLoginParams & {
+          goHome?: boolean
+          mode?: ErrorMessageMode
+        },
+    ): Promise<GetUserInfoModel | null> {
+      try {
+        const { goHome = true, mode, ...smsLoginParams } = params
+        const data = await smsLogin(smsLoginParams, mode)
+        const { accessToken, refreshToken } = data
+        // save token
+        this.setAccessToken(accessToken)
+        this.setRefreshToken(refreshToken)
+        return this.afterLoginAction(goHome)
+      }
+      catch (error) {
+        return Promise.reject(error)
+      }
+    },
     async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
-      if (!this.getToken) return null;
+      if (!this.getAccessToken) return null;
       // get user info
       const userInfo = await this.getUserInfoAction();
 
@@ -118,16 +146,16 @@ export const useUserStore = defineStore({
           router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
           permissionStore.setDynamicAddedRoute(true);
         }
-        goHome && (await router.replace(userInfo?.homePath || PageEnum.BASE_HOME));
+        goHome && (await router.replace(PageEnum.BASE_HOME));
       }
       return userInfo;
     },
-    async getUserInfoAction(): Promise<UserInfo | null> {
-      if (!this.getToken) return null;
+    async getUserInfoAction(): Promise<GetUserInfoModel | null> {
+      if (!this.getAccessToken) return null;
       const userInfo = await getUserInfo();
       const { roles = [] } = userInfo;
       if (isArray(roles)) {
-        const roleList = roles.map((item) => item.value) as RoleEnum[];
+        const roleList = roles.map(item => item) as RoleEnum[]
         this.setRoleList(roleList);
       } else {
         userInfo.roles = [];
@@ -140,14 +168,14 @@ export const useUserStore = defineStore({
      * @description: logout
      */
     async logout(goLogin = false) {
-      if (this.getToken) {
+      if (this.getAccessToken) {
         try {
           await doLogout();
         } catch {
           console.log('注销Token失败');
         }
       }
-      this.setToken(undefined);
+      this.setAccessToken(undefined);
       this.setSessionTimeout(false);
       this.setUserInfo(null);
       goLogin && router.push(PageEnum.BASE_LOGIN);

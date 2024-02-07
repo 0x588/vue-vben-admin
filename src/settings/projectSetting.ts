@@ -103,7 +103,7 @@ const setting: ProjectConfig = {
     // Menu mode
     mode: MenuModeEnum.INLINE,
     // Menu type
-    type: MenuTypeEnum.SIDEBAR,
+    type: MenuTypeEnum.MIX_SIDEBAR,
     // Menu theme
     theme: ThemeEnum.DARK,
     // Split menu
@@ -117,7 +117,7 @@ const setting: ProjectConfig = {
     // Switch page to close menu
     closeMixSidebarOnChange: false,
     // Module opening method ‘click’ |'hover'
-    mixSideTrigger: MixSidebarTriggerEnum.CLICK,
+    mixSideTrigger: MixSidebarTriggerEnum.HOVER,
     // Fixed expanded menu
     mixSideFixed: false,
   },
