@@ -9,13 +9,19 @@ export type Component<T = any> =
 
 // @ts-ignore
 export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta'> {
-  name: string;
-  meta: RouteMeta;
-  component?: Component | string;
-  components?: Component;
-  children?: AppRouteRecordRaw[];
-  props?: Recordable;
-  fullPath?: string;
+  keepAlive?: boolean
+  visible?: boolean
+  icon?: string
+  name: string
+  sort?: number
+  parentId?: number
+  meta: RouteMeta
+  component?: Component | string
+  components?: Component
+  componentName?: string
+  children?: AppRouteRecordRaw[]
+  props?: Recordable
+  fullPath?: string
 }
 
 export interface MenuTag {

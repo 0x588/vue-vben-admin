@@ -1,6 +1,6 @@
 import { BasicColumn, FormSchema, useRender } from '@/components/Table';
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
-import { listSimpleMenus } from '@/api/sys/menu'
+import { listSimpleMenus } from '@/api/system/menu'
 import { SystemMenuTypeEnum } from '@/enums/systemEnum'
 
 export const columns: BasicColumn[] = [

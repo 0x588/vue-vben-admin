@@ -56,12 +56,12 @@ const system: AppRouteModule = {
 
     {
       path: 'menu',
-      name: 'MenuManagement',
+      name: 'SystemMenu',
       meta: {
         title: t('routes.demo.system.menu'),
         ignoreKeepAlive: true,
       },
-      component: () => import('@/views/demo/system/menu/index.vue'),
+      component: () => import('@/views/system/menu/index.vue'),
     },
     {
       path: 'dept',

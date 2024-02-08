@@ -43,7 +43,7 @@
   import { nextTick } from 'vue';
 
   import { BasicTable, useTable, TableAction } from '@/components/Table';
-  import { getMenuList } from '@/api/demo/system';
+  import { getMenuList } from '@/api/system/menu';
   import { handleTree } from '@/utils/tree'
 
   import { useDrawer } from '@/components/Drawer';
@@ -53,10 +53,10 @@
   import { usePermission } from '@/hooks/web/usePermission'
   import { useMessage } from '@/hooks/web/useMessage'
   import {IconEnum} from "@/enums/appEnum";
-  import { deleteMenu } from '@/api/sys/menu'
+  import { deleteMenu } from '@/api/system/menu'
 
 
-  defineOptions({ name: 'MenuManagement' });
+  defineOptions({ name: 'SystemMenu' });
 
   const { createMessage, createConfirm } = useMessage()
 

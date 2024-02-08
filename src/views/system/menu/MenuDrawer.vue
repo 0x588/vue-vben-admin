@@ -17,15 +17,13 @@
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
   import { createMenu, getMenu, updateMenu } from '@/api/sys/menu'
 
-  import { getMenuList } from '@/api/demo/system';
-
   defineOptions({ name: 'MenuDrawer' });
 
   const emit = defineEmits(['success', 'register']);
 
   const isUpdate = ref(true);
 
-  const [registerForm, { resetFields, setFieldsValue, updateSchema, validate }] = useForm({
+  const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
     schemas: formSchema,
     showActionButtonGroup: false,
@@ -41,11 +39,6 @@
       const res = await getMenu(data.record.id)
       setFieldsValue({ ...res });
     }
-    const treeData = await getMenuList();
-    updateSchema({
-      field: 'parentMenu',
-      componentProps: { treeData },
-    });
   });
 
   const getTitle = computed(() => (!unref(isUpdate) ? '新增菜单' : '编辑菜单'));
