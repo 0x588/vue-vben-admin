@@ -9,6 +9,7 @@ import { useRender } from '@/components/Table'
 import { DICT_TYPE, getDictOptions } from '@/utils/dict'
 import { updateUserStatus } from '@/api/system/user'
 import { listSimpleRoles } from '@/api/system/role'
+import { uploadApi } from '@/api/sys/upload';
 
 export const columns: BasicColumn[] = [
   {
@@ -137,6 +138,9 @@ export const formSchema: FormSchema[] = [
     field: 'avatar',
     component: 'ImageUpload',
     componentProps: {
+      api: uploadApi,
+      accept: ['png', 'jpeg', 'jpg'],
+      maxSize: 2,
       maxNumber: 1,
     },
   },

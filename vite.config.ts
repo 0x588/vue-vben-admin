@@ -24,11 +24,11 @@ export default defineApplicationConfig({
           // only https
           // secure: false
         },
-        '/upload': {
-          target: 'http://localhost:3300/upload',
+        '/api': {
+          target: 'http://localhost:8080',
           changeOrigin: true,
           ws: true,
-          rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),
+          rewrite: (path) => path.replace(new RegExp(`^/api`), '/api'),
         },
       },
       warmup: {
