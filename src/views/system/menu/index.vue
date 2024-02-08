@@ -75,6 +75,7 @@
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,
+    defaultExpandAllRows:false,
     showIndexColumn: false,
     canResize: false,
     actionColumn: {
@@ -128,6 +129,6 @@
   }
   function onFetchSuccess() {
     // 演示默认展开所有表项
-    nextTick(expandAll);
+    // nextTick(expandAll);
   }
 </script>

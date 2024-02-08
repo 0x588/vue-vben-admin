@@ -7,6 +7,7 @@ const dashboard: AppRouteModule = {
   path: '/dashboard',
   name: 'Dashboard',
   component: LAYOUT,
+  parentId: 0,
   redirect: '/dashboard/analysis',
   meta: {
     orderNo: 10,
@@ -21,6 +22,7 @@ const dashboard: AppRouteModule = {
       meta: {
         // affix: true,
         title: t('routes.dashboard.analysis'),
+        icon: 'ant-design:bar-chart-outlined',
       },
     },
     {
@@ -29,6 +31,7 @@ const dashboard: AppRouteModule = {
       component: () => import('@/views/dashboard/workbench/index.vue'),
       meta: {
         title: t('routes.dashboard.workbench'),
+        icon: 'ant-design:appstore-outlined',
       },
     },
   ],
