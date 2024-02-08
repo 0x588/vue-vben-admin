@@ -23,6 +23,10 @@
                 onClick: handleEdit.bind(null, record),
               },
               {
+                icon: IconEnum.ADD,
+                onClick: handleAddChild.bind(null, record),
+              },
+              {
                 icon: IconEnum.DELETE,
                 color: 'error',
                 popConfirm: {
@@ -40,8 +44,6 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { nextTick } from 'vue';
-
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { getMenuList } from '@/api/system/menu';
   import { handleTree } from '@/utils/tree'
@@ -79,11 +81,11 @@
     showIndexColumn: false,
     canResize: false,
     actionColumn: {
-      width: 80,
+      width: 140,
       title: '操作',
       dataIndex: 'action',
       // slots: { customRender: 'action' },
-      fixed: undefined,
+      fixed: "right",
     },
   });
 
@@ -104,6 +106,13 @@
     });
   }
 
+  function handleAddChild(record: Recordable) {
+    openDrawer(true, {
+      parentId: record.id,
+      isUpdate: false,
+    });
+  }
+
   function handleDelete(record: Recordable) {
     deleteMenu(record.id)
     reload()
@@ -111,6 +120,7 @@
 
   function handleSuccess() {
     reload();
+    // location.reload()
   }
 
   function refreshMenu() {

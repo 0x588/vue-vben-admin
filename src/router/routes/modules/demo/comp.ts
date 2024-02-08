@@ -4,10 +4,10 @@ import { getParentLayout, LAYOUT } from '@/router/constant';
 import { t } from '@/hooks/web/useI18n';
 
 const comp: AppRouteModule = {
-  path: '/comp',
+  path: '/demo/comp',
   name: 'Comp',
   component: LAYOUT,
-  redirect: '/comp/basic',
+  redirect: '/demo/comp/basic',
   meta: {
     orderNo: 30,
     icon: 'ion:layers-outline',
@@ -27,7 +27,7 @@ const comp: AppRouteModule = {
     {
       path: 'form',
       name: 'FormDemo',
-      redirect: '/comp/form/basic',
+      redirect: '/demo/comp/form/basic',
       component: getParentLayout('FormDemo'),
       meta: {
         // icon: 'mdi:form-select',
@@ -111,7 +111,7 @@ const comp: AppRouteModule = {
     {
       path: 'table',
       name: 'TableDemo',
-      redirect: '/comp/table/basic',
+      redirect: '/demo/comp/table/basic',
       component: getParentLayout('TableDemo'),
       meta: {
         // icon: 'carbon:table-split',
@@ -301,7 +301,7 @@ const comp: AppRouteModule = {
     {
       path: 'tree',
       name: 'TreeDemo',
-      redirect: '/comp/tree/basic',
+      redirect: '/demo/comp/tree/basic',
       component: getParentLayout('TreeDemo'),
       meta: {
         // icon: 'clarity:tree-view-line',
@@ -337,7 +337,7 @@ const comp: AppRouteModule = {
     {
       path: 'editor',
       name: 'EditorDemo',
-      redirect: '/comp/editor/markdown',
+      redirect: '/demo/comp/editor/markdown',
       component: getParentLayout('EditorDemo'),
       meta: {
         // icon: 'carbon:table-split',

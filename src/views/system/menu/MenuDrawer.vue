@@ -38,6 +38,10 @@
     if (unref(isUpdate)) {
       const res = await getMenu(data.record.id)
       setFieldsValue({ ...res });
+    } else {
+      if (data?.parentId) {
+        setFieldsValue({"parentId": data?.parentId})
+      }
     }
   });
 

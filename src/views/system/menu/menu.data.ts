@@ -119,7 +119,7 @@ export const formSchema: FormSchema[] = [
     field: 'sort',
     required: true,
     component: 'InputNumber',
-    defaultValue: 0,
+    defaultValue: 10,
   },
   {
     label: '路由地址',
@@ -155,6 +155,7 @@ export const formSchema: FormSchema[] = [
     field: 'status',
     required: true,
     component: 'RadioButtonGroup',
+    defaultValue:1,
     helpMessage: '选择停用时，路由将不会出现在侧边栏，也不能被访问',
     componentProps: {
       options: getDictOptions(DICT_TYPE.COMMON_STATUS),
@@ -164,6 +165,7 @@ export const formSchema: FormSchema[] = [
     label: '显示状态',
     field: 'visible',
     component: 'Switch',
+    defaultValue: true,
     componentProps: {
       checkedChildren: '显示',
       unCheckedChildren: '隐藏',
