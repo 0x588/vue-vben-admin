@@ -210,7 +210,7 @@ export const usePermissionStore = defineStore({
           const { createMessage } = useMessage();
 
           createMessage.loading({
-            content: t('sys.app.menuLoading'),
+            content: t('base.app.menuLoading'),
             duration: 1,
           });
 

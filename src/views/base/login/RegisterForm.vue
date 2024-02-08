@@ -7,14 +7,14 @@
           class="fix-auto-fill"
           size="large"
           v-model:value="formData.account"
-          :placeholder="t('sys.login.userName')"
+          :placeholder="t('base.login.userName')"
         />
       </FormItem>
       <FormItem name="mobile" class="enter-x">
         <Input
           size="large"
           v-model:value="formData.mobile"
-          :placeholder="t('sys.login.mobile')"
+          :placeholder="t('base.login.mobile')"
           class="fix-auto-fill"
         />
       </FormItem>
@@ -23,14 +23,14 @@
           size="large"
           class="fix-auto-fill"
           v-model:value="formData.sms"
-          :placeholder="t('sys.login.smsCode')"
+          :placeholder="t('base.login.smsCode')"
         />
       </FormItem>
       <FormItem name="password" class="enter-x">
         <StrengthMeter
           size="large"
           v-model:value="formData.password"
-          :placeholder="t('sys.login.password')"
+          :placeholder="t('base.login.password')"
         />
       </FormItem>
       <FormItem name="confirmPassword" class="enter-x">
@@ -38,14 +38,14 @@
           size="large"
           visibilityToggle
           v-model:value="formData.confirmPassword"
-          :placeholder="t('sys.login.confirmPassword')"
+          :placeholder="t('base.login.confirmPassword')"
         />
       </FormItem>
 
       <FormItem class="enter-x" name="policy">
         <!-- No logic, you need to deal with it yourself -->
         <Checkbox v-model:checked="formData.policy" size="small">
-          {{ t('sys.login.policy') }}
+          {{ t('base.login.policy') }}
         </Checkbox>
       </FormItem>
 
@@ -57,10 +57,10 @@
         @click="handleRegister"
         :loading="loading"
       >
-        {{ t('sys.login.registerButton') }}
+        {{ t('base.login.registerButton') }}
       </Button>
       <Button size="large" block class="mt-4 enter-x" @click="handleBackLogin">
-        {{ t('sys.login.backSignIn') }}
+        {{ t('base.login.backSignIn') }}
       </Button>
     </Form>
   </div>

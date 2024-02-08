@@ -10,7 +10,7 @@
       v-show="showDate"
     >
       <LockOutlined />
-      <span>{{ t('sys.lock.unlock') }}</span>
+      <span>{{ t('base.lock.unlock') }}</span>
     </div>
 
     <div class="flex w-screen h-screen justify-center items-center">
@@ -34,12 +34,12 @@
             </p>
           </div>
           <InputPassword
-            :placeholder="t('sys.lock.placeholder')"
+            :placeholder="t('base.lock.placeholder')"
             class="enter-x"
             v-model:value="password"
           />
           <span :class="`${prefixCls}-entry__err-msg enter-x`" v-if="errMsg">
-            {{ t('sys.lock.alert') }}
+            {{ t('base.lock.alert') }}
           </span>
           <div :class="`${prefixCls}-entry__footer enter-x`">
             <a-button
@@ -58,10 +58,10 @@
               :disabled="loading"
               @click="goLogin"
             >
-              {{ t('sys.lock.backToLogin') }}
+              {{ t('base.lock.backToLogin') }}
             </a-button>
             <a-button class="mt-2" type="link" size="small" @click="unLock()" :loading="loading">
-              {{ t('sys.lock.entry') }}
+              {{ t('base.lock.entry') }}
             </a-button>
           </div>
         </div>

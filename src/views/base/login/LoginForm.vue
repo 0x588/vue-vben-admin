@@ -12,7 +12,7 @@
       <Input
         size="large"
         v-model:value="formData.account"
-        :placeholder="t('sys.login.userName')"
+        :placeholder="t('base.login.userName')"
         class="fix-auto-fill"
       />
     </FormItem>
@@ -21,7 +21,7 @@
         size="large"
         visibilityToggle
         v-model:value="formData.password"
-        :placeholder="t('sys.login.password')"
+        :placeholder="t('base.login.password')"
       />
     </FormItem>
 
@@ -30,7 +30,7 @@
         <FormItem>
           <!-- No logic, you need to deal with it yourself -->
           <Checkbox v-model:checked="rememberMe" size="small">
-            {{ t('sys.login.rememberMe') }}
+            {{ t('base.login.rememberMe') }}
           </Checkbox>
         </FormItem>
       </ACol>
@@ -38,7 +38,7 @@
 <!--        <FormItem :style="{ 'text-align': 'right' }">-->
 <!--          &lt;!&ndash; No logic, you need to deal with it yourself &ndash;&gt;-->
 <!--          <Button type="link" size="small" @click="setLoginState(LoginStateEnum.RESET_PASSWORD)">-->
-<!--            {{ t('sys.login.forgetPassword') }}-->
+<!--            {{ t('base.login.forgetPassword') }}-->
 <!--          </Button>-->
 <!--        </FormItem>-->
       </ACol>
@@ -46,31 +46,31 @@
 
     <FormItem class="enter-x">
       <Button type="primary" size="large" block @click="getCode" :loading="loading">
-        {{ t('sys.login.loginButton') }}
+        {{ t('base.login.loginButton') }}
       </Button>
       <!-- <Button size="large" class="mt-4 enter-x" block @click="handleRegister">
-        {{ t('sys.login.registerButton') }}
+        {{ t('base.login.registerButton') }}
       </Button> -->
     </FormItem>
 <!--    <ARow class="enter-x" :gutter="[16, 16]">-->
 <!--      <ACol :md="8" :xs="24">-->
 <!--        <Button block @click="setLoginState(LoginStateEnum.MOBILE)">-->
-<!--          {{ t('sys.login.mobileSignInFormTitle') }}-->
+<!--          {{ t('base.login.mobileSignInFormTitle') }}-->
 <!--        </Button>-->
 <!--      </ACol>-->
 <!--      <ACol :md="8" :xs="24">-->
 <!--        <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">-->
-<!--          {{ t('sys.login.qrSignInFormTitle') }}-->
+<!--          {{ t('base.login.qrSignInFormTitle') }}-->
 <!--        </Button>-->
 <!--      </ACol>-->
 <!--      <ACol :md="8" :xs="24">-->
 <!--        <Button block @click="setLoginState(LoginStateEnum.REGISTER)">-->
-<!--          {{ t('sys.login.registerButton') }}-->
+<!--          {{ t('base.login.registerButton') }}-->
 <!--        </Button>-->
 <!--      </ACol>-->
 <!--    </ARow>-->
 
-<!--    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>-->
+<!--    <Divider class="enter-x">{{ t('base.login.otherSignIn') }}</Divider>-->
 
 <!--    <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">-->
 <!--      <GithubFilled />-->
@@ -161,15 +161,15 @@
       if (userInfo) {
         await permissionStore.changePermissionCode(userInfo.permissions)
         notification.success({
-          message: t('sys.login.loginSuccessTitle'),
-          description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.user.nickname}`,
+          message: t('base.login.loginSuccessTitle'),
+          description: `${t('base.login.loginSuccessDesc')}: ${userInfo.user.nickname}`,
           duration: 3,
         });
       }
     } catch (error) {
       createErrorModal({
-        title: t('sys.api.errorTip'),
-        content: (error as unknown as Error).message || t('sys.api.networkExceptionMsg'),
+        title: t('base.api.errorTip'),
+        content: (error as unknown as Error).message || t('base.api.networkExceptionMsg'),
         getContainer: () => document.body.querySelector(`.${prefixCls}`) || document.body,
       });
     } finally {

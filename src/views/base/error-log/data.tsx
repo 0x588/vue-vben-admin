@@ -9,7 +9,7 @@ export function getColumns(): BasicColumn[] {
   return [
     {
       dataIndex: 'type',
-      title: t('sys.errorLog.tableColumnType'),
+      title: t('base.errorLog.tableColumnType'),
       width: 80,
       customRender: ({ text }) => {
         const color =
@@ -32,12 +32,12 @@ export function getColumns(): BasicColumn[] {
     },
     {
       dataIndex: 'time',
-      title: t('sys.errorLog.tableColumnDate'),
+      title: t('base.errorLog.tableColumnDate'),
       width: 160,
     },
     {
       dataIndex: 'file',
-      title: t('sys.errorLog.tableColumnFile'),
+      title: t('base.errorLog.tableColumnFile'),
       width: 200,
     },
     {
@@ -47,12 +47,12 @@ export function getColumns(): BasicColumn[] {
     },
     {
       dataIndex: 'message',
-      title: t('sys.errorLog.tableColumnMsg'),
+      title: t('base.errorLog.tableColumnMsg'),
       width: 300,
     },
     {
       dataIndex: 'stack',
-      title: t('sys.errorLog.tableColumnStackMsg'),
+      title: t('base.errorLog.tableColumnStackMsg'),
     },
   ];
 }

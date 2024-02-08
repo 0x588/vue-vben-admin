@@ -7,13 +7,13 @@
     <BasicTable @register="register" class="error-handle-table">
       <template #toolbar>
         <a-button @click="fireVueError" type="primary">
-          {{ t('sys.errorLog.fireVueError') }}
+          {{ t('base.errorLog.fireVueError') }}
         </a-button>
         <a-button @click="fireResourceError" type="primary">
-          {{ t('sys.errorLog.fireResourceError') }}
+          {{ t('base.errorLog.fireResourceError') }}
         </a-button>
         <a-button @click="fireAjaxError" type="primary">
-          {{ t('sys.errorLog.fireAjaxError') }}
+          {{ t('base.errorLog.fireAjaxError') }}
         </a-button>
       </template>
       <template #bodyCell="{ column, record }">
@@ -21,7 +21,7 @@
           <TableAction
             :actions="[
               {
-                label: t('sys.errorLog.tableActionDesc'),
+                label: t('base.errorLog.tableActionDesc'),
                 onClick: handleDetail.bind(null, record as ErrorLogInfo),
               },
             ]"
@@ -51,7 +51,7 @@
   const { t } = useI18n();
   const errorLogStore = useErrorLogStore();
   const [register, { setTableData }] = useTable({
-    title: t('sys.errorLog.tableTitle'),
+    title: t('base.errorLog.tableTitle'),
     columns: getColumns(),
     actionColumn: {
       width: 80,
@@ -75,7 +75,7 @@
   );
   const { createMessage } = useMessage();
   if (import.meta.env.DEV) {
-    createMessage.info(t('sys.errorLog.enableMessage'));
+    createMessage.info(t('base.errorLog.enableMessage'));
   }
   // 查看详情
   function handleDetail(row: ErrorLogInfo) {

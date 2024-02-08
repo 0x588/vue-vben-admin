@@ -53,22 +53,22 @@ export function useFormValid<T extends Object = any>(formRef: Ref<FormInstance>)
 export function useFormRules(formData?: Recordable) {
   const { t } = useI18n();
 
-  const getAccountFormRule = computed(() => createRule(t('sys.login.accountPlaceholder')));
-  const getPasswordFormRule = computed(() => createRule(t('sys.login.passwordPlaceholder')));
-  const getSmsFormRule = computed(() => createRule(t('sys.login.smsPlaceholder')));
-  const getMobileFormRule = computed(() => createRule(t('sys.login.mobilePlaceholder')));
+  const getAccountFormRule = computed(() => createRule(t('base.login.accountPlaceholder')));
+  const getPasswordFormRule = computed(() => createRule(t('base.login.passwordPlaceholder')));
+  const getSmsFormRule = computed(() => createRule(t('base.login.smsPlaceholder')));
+  const getMobileFormRule = computed(() => createRule(t('base.login.mobilePlaceholder')));
 
   const validatePolicy = async (_: RuleObject, value: boolean) => {
-    return !value ? Promise.reject(t('sys.login.policyPlaceholder')) : Promise.resolve();
+    return !value ? Promise.reject(t('base.login.policyPlaceholder')) : Promise.resolve();
   };
 
   const validateConfirmPassword = (password: string) => {
     return async (_: RuleObject, value: string) => {
       if (!value) {
-        return Promise.reject(t('sys.login.passwordPlaceholder'));
+        return Promise.reject(t('base.login.passwordPlaceholder'));
       }
       if (value !== password) {
-        return Promise.reject(t('sys.login.diffPwd'));
+        return Promise.reject(t('base.login.diffPwd'));
       }
       return Promise.resolve();
     };

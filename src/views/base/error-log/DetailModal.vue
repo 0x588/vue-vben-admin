@@ -1,5 +1,5 @@
 <template>
-  <BasicModal :width="800" :title="t('sys.errorLog.tableActionDesc')" v-bind="$attrs">
+  <BasicModal :width="800" :title="t('base.errorLog.tableActionDesc')" v-bind="$attrs">
     <Description :data="info" @register="register" />
   </BasicModal>
 </template>

@@ -189,8 +189,8 @@ export const useUserStore = defineStore({
       const { t } = useI18n();
       createConfirm({
         iconType: 'warning',
-        title: () => h('span', t('sys.app.logoutTip')),
-        content: () => h('span', t('sys.app.logoutMessage')),
+        title: () => h('span', t('base.app.logoutTip')),
+        content: () => h('span', t('base.app.logoutMessage')),
         onOk: async () => {
           await this.logout(true);
         },
