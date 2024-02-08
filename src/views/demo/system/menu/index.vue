@@ -53,6 +53,7 @@
   import { usePermission } from '@/hooks/web/usePermission'
   import { useMessage } from '@/hooks/web/useMessage'
   import {IconEnum} from "@/enums/appEnum";
+  import { deleteMenu } from '@/api/sys/menu'
 
 
   defineOptions({ name: 'MenuManagement' });
@@ -103,7 +104,8 @@
   }
 
   function handleDelete(record: Recordable) {
-    console.log(record);
+    deleteMenu(record.id)
+    reload()
   }
 
   function handleSuccess() {

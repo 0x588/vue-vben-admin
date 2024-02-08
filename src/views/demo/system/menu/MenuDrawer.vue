@@ -15,6 +15,7 @@
   import { BasicForm, useForm } from '@/components/Form';
   import { formSchema } from './menu.data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
+  import { createMenu, getMenu, updateMenu } from '@/api/sys/menu'
 
   import { getMenuList } from '@/api/demo/system';
 
@@ -37,9 +38,8 @@
     isUpdate.value = !!data?.isUpdate;
 
     if (unref(isUpdate)) {
-      setFieldsValue({
-        ...data.record,
-      });
+      const res = await getMenu(data.record.id)
+      setFieldsValue({ ...res });
     }
     const treeData = await getMenuList();
     updateSchema({
@@ -54,8 +54,10 @@
     try {
       const values = await validate();
       setDrawerProps({ confirmLoading: true });
-      // TODO custom api
-      console.log(values);
+      if (unref(isUpdate))
+        await updateMenu(values as any)
+      else
+        await createMenu(values as any)
       closeDrawer();
       emit('success');
     } finally {
