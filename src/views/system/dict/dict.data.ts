@@ -136,7 +136,7 @@ export const dataSearchFormSchema: FormSchema[] = [
     field: 'status',
     component: 'Select',
     componentProps: {
-      options: getDictOptions(DICT_TYPE.COMMON_STATUS),
+      options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
     },
     colProps: { span: 8 },
   },
@@ -180,7 +180,7 @@ export const dataFormSchema: FormSchema[] = [
     field: 'status',
     component: 'Select',
     componentProps: {
-      options: getDictOptions(DICT_TYPE.COMMON_STATUS),
+      options: getDictOptions(DICT_TYPE.COMMON_STATUS) as any,
     },
   },
   {

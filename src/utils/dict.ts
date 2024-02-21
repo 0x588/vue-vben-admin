@@ -77,6 +77,7 @@ export enum DICT_TYPE {
   COMMON_STATUS = 'common_status',
   SYSTEM_TENANT_PACKAGE_ID = 'system_tenant_package_id',
 
+  COMMON_CONFIG_TYPE = 'common_config_type',
   // ========== SYSTEM 模块 ==========
   SYSTEM_USER_SEX = 'system_user_sex',
   SYSTEM_MENU_TYPE = 'system_menu_type',

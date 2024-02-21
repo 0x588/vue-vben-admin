@@ -1,14 +1,13 @@
 <script lang="ts" setup>
 import { ref, unref } from 'vue'
-import { typeFormSchema } from './dict.type'
+import { configFormSchema } from './config'
 import { useI18n } from '@/hooks/web/useI18n'
 import { useMessage } from '@/hooks/web/useMessage'
 import { BasicForm, useForm } from '@/components/Form'
 import { BasicModal, useModalInner } from '@/components/Modal'
-import { createDictType, getDictType, updateDictType } from '@/api/system/dict/type'
-import {DictTypeVO} from "@/api/sys/dict/types";
+import {ConfigVO, createConfig, getConfig, updateConfig} from "@/api/system/common-config/config";
 
-defineOptions({ name: 'SystemDictTypeModal' })
+defineOptions({ name: 'SystemDictDataModal' })
 
 const emit = defineEmits(['success', 'register'])
 const { t } = useI18n()
@@ -18,7 +17,7 @@ const isUpdate = ref(true)
 const [registerForm, { setFieldsValue, resetFields, validate }] = useForm({
   labelWidth: 120,
   baseColProps: { span: 24 },
-  schemas: typeFormSchema,
+  schemas: configFormSchema,
   showActionButtonGroup: false,
   actionColOptions: { span: 23 },
 })
@@ -28,8 +27,13 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
   setModalProps({ confirmLoading: false })
   isUpdate.value = !!data?.isUpdate
   if (unref(isUpdate)) {
-    const res = await getDictType(data.record.id)
+    const res = await getConfig(data.record.id)
     setFieldsValue({ ...res })
+  }
+  else {
+    setFieldsValue({
+      dictType: data.record,
+    })
   }
 })
 
@@ -38,9 +42,9 @@ async function handleSubmit() {
     const values = await validate()
     setModalProps({ confirmLoading: true })
     if (unref(isUpdate))
-      await updateDictType(values as DictTypeVO)
+      await updateConfig(values as ConfigVO)
     else
-      await createDictType(values as DictTypeVO)
+      await createConfig(values as ConfigVO)
 
     closeModal()
     emit('success')
