@@ -32,7 +32,7 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
   }
   else {
     setFieldsValue({
-      dictType: data.record,
+      cateId: data.record,
     })
   }
 })
