@@ -11,6 +11,26 @@ const typeOptions = [
   {
     label:"密码框",
     value:"InputPassword",
+  },
+  {
+    label:"数字输入框",
+    value:"InputNumber",
+  },
+  {
+    label:"日期选择器",
+    value:"DatePicker",
+  },
+  {
+    label:"下拉选择器",
+    value:"Select",
+  },
+  {
+    label:"CheckBox多选",
+    value:"CheckboxGroup",
+  },
+  {
+    label:"图片上传",
+    value:"ImageUpload",
   }
 ]
 
