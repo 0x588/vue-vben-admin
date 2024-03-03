@@ -29,7 +29,7 @@ const typeOptions = [
         value: "Select",
     },
     {
-        label: "CheckBox复选",
+        label: "复选框",
         value: "CheckboxGroup",
     },
     {
