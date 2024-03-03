@@ -27,10 +27,11 @@ const [register, {setFieldsValue, appendSchemaByField, validate}] = useForm({
   showActionButtonGroup: false,
 });
 
-onMounted(() => {
+onMounted(async () => {
   var obj = {}
+
   for (const cate of props.cats!) {
-    appendSchemaByField(
+    await  appendSchemaByField(
       {
         field: cate.name,
         component: 'BasicTitle',
@@ -68,20 +69,20 @@ onMounted(() => {
           maxSize: 100,
         }
       }
-      appendSchemaByField(
+      await  appendSchemaByField(
         schema,
         ''
       );
-      if (cfg?.value  && cfg.type !== 'CheckboxGroup') {
+      if (cfg?.value && cfg.type !== 'ImageUpload'  && cfg.type !== 'CheckboxGroup') {
         obj[cfg.name] = cfg.value.data
       } else if (cfg?.value && cfg.type === 'CheckboxGroup') {
         obj[cfg.name] = JSON.parse(cfg.value.data)
       } else if (cfg?.value && cfg.type === 'ImageUpload') {
-        obj[cfg.name] = cfg.value.data
+        obj[cfg.name] = [cfg.value.data]
       }
     }
   }
-  setFieldsValue(obj)
+  await  setFieldsValue(obj)
 })
 
 async function handleSubmit() {
