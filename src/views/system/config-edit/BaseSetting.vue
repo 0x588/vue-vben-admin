@@ -10,9 +10,10 @@ import {CollapseContainer} from '@/components/Container';
 import {useMessage} from '@/hooks/web/useMessage';
 import {baseSetschemas} from './data';
 import {ConfigCate} from "@/api/system/config-edit";
-import {onMounted} from "vue";
+import {onMounted, h} from "vue";
 import {configEditSave} from "@/api/system/config-edit";
 import {uploadApi} from "@/api/sys/upload";
+import {Tinymce} from "@/components/Tinymce";
 
 const props = defineProps({
   cats: {
@@ -57,7 +58,7 @@ onMounted(async () => {
           return cfg.remark
         },
       }
-      if (cfg.type === 'Select' || cfg.type === 'CheckboxGroup') {
+      if (cfg.type === 'Select' || cfg.type === 'CheckboxGroup' || cfg.type == 'RadioGroup') {
         schema.componentProps = {
           options: JSON.parse(cfg.options)
         }
@@ -67,6 +68,16 @@ onMounted(async () => {
           accept: ['png', 'jpeg', 'jpg'],
           maxNumber: 1,
           maxSize: 100,
+        }
+      } else if (cfg.type === 'UEditor') {
+        schema.component = 'Input'
+        schema.render = ({ model, field }) => {
+          return h(Tinymce, {
+            value: model[field],
+            onChange: (value: string) => {
+              model[field] = value;
+            },
+          });
         }
       }
       await  appendSchemaByField(
@@ -78,7 +89,7 @@ onMounted(async () => {
       } else if (cfg?.value && cfg.type === 'CheckboxGroup') {
         obj[cfg.name] = JSON.parse(cfg.value.data)
       } else if (cfg?.value && cfg.type === 'ImageUpload') {
-        obj[cfg.name] = [cfg.value.data]
+        obj[cfg.name] = cfg.value.data
       }
     }
   }
