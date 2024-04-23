@@ -81,43 +81,33 @@ function dynamicImport(
 // 将背景对象变成路由对象
 export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModule[]): T[] {
   routeList.forEach((route) => {
-    if (isHttpUrl(route.path))
-      route.component = 'IFrame'
-    else if (route.children && route.parentId === 0)
-      route.component = 'LAYOUT'
-    else if (!route.children)
-      route.component = route.component as string
-
-    const component = route.component as string
+    const component = route.component as string;
     if (component) {
-      const meta = route.meta || {}
-      meta.hideMenu = !route.visible
-      meta.orderNo = route.sort
-      meta.ignoreKeepAlive = !route.keepAlive
-      meta.title = route.name
-      meta.icon = route.icon
       if (component.toUpperCase() === 'LAYOUT') {
-        route.component = LayoutMap.get('LAYOUT'.toUpperCase())
+        route.component = LayoutMap.get(component.toUpperCase());
+      } else {
+        route.children = [cloneDeep(route)];
+        route.component = LAYOUT;
+
+        //某些情况下如果name如果没有值， 多个一级路由菜单会导致页面404
+        if (!route.name) {
+          warn('找不到菜单对应的name, 请检查数据!' + JSON.stringify(route));
+        }
+        route.name = `${route.name}Parent`;
+        // 重定向到当前路由，以防空白页面
+        route.redirect = route.path;
+        route.path = '';
+        const meta = route.meta || {};
+        meta.single = true;
+        meta.affix = false;
+        route.meta = meta;
       }
-      else if (component.toUpperCase() === 'IFRAME') {
-        route.component = LayoutMap.get('IFRAME'.toUpperCase())
-      }
-      else {
-        // 处理顶级非目录路由
-        meta.single = true
-        route.children = [cloneDeep(route)]
-        route.component = LAYOUT
-        route.name = `${toCamelCase(route.path, true)}Parent`
-        route.path = ''
-      }
-      route.meta = meta
+    } else {
+      warn('请正确配置路由：' + route?.name + '的component属性');
     }
-    else {
-      warn(`请正确配置路由：${route?.name}的component属性`)
-    }
-    route.children && asyncImportRoute(route.children)
-  })
-  return routeList as unknown as T[]
+    route.children && asyncImportRoute(route.children);
+  });
+  return routeList as unknown as T[];
 }
 
 /**
