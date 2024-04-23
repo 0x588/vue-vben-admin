@@ -5,10 +5,9 @@ import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '@/router/constant'
 import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
-import {isHttpUrl} from "@/utils/is";
 
 export type LayoutMapKey = 'LAYOUT';
-const IFRAME = () => import('@/views/base/iframe/FrameBlank.vue');
+const IFRAME = () => import('@/views/sys/iframe/FrameBlank.vue');
 
 const LayoutMap = new Map<string, () => Promise<typeof import('*.vue')>>();
 
@@ -19,35 +18,26 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
 function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
-  dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}')
-  if (!routes)
-    return
+  dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
+  if (!routes) return;
   routes.forEach((item) => {
-    if (!item.component && item.meta?.frameSrc)
-      item.component = 'IFRAME'
-
-    const { component, name } = item
-    const { children } = item
+    if (!item.component && item.meta?.frameSrc) {
+      item.component = 'IFRAME';
+    }
+    const { component, name } = item;
+    const { children } = item;
     if (component) {
-      const layoutFound = LayoutMap.get(component.toUpperCase())
-      if (layoutFound)
-        item.component = layoutFound
-      else
-        item.component = dynamicImport(dynamicViewsModules, component as string)
+      const layoutFound = LayoutMap.get(component.toUpperCase());
+      if (layoutFound) {
+        item.component = layoutFound;
+      } else {
+        item.component = dynamicImport(dynamicViewsModules, component as string);
+      }
+    } else if (name) {
+      item.component = getParentLayout();
     }
-    else if (name) {
-      item.component = getParentLayout()
-    }
-    const meta = item.meta || {}
-    meta.title = item.name
-    meta.icon = item.icon
-    meta.hideMenu = !item.visible
-    meta.orderNo = item.sort
-    meta.ignoreKeepAlive = !item.keepAlive
-    item.meta = meta
-    item.name = item.name = item.componentName && item.componentName.length > 0 ? item.componentName : toCamelCase(item.path, true)
-    children && asyncImportRoute(children)
-  })
+    children && asyncImportRoute(children);
+  });
 }
 
 function dynamicImport(
@@ -192,17 +182,4 @@ function isMultipleRoute(routeModule: AppRouteModule) {
     }
   }
   return flag;
-}
-
-function toCamelCase(str: string, upperCaseFirst: boolean) {
-  str = (str || '')
-      .replace(/-(.)/g, (group1: string) => {
-        return group1.toUpperCase()
-      })
-      .replaceAll('-', '')
-
-  if (upperCaseFirst && str)
-    str = str.charAt(0).toUpperCase() + str.slice(1)
-
-  return str
 }
