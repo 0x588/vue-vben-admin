@@ -5,6 +5,7 @@ import { getParentLayout, LAYOUT, EXCEPTION_COMPONENT } from '@/router/constant'
 import { cloneDeep, omit } from 'lodash-es';
 import { warn } from '@/utils/log';
 import { createRouter, createWebHashHistory } from 'vue-router';
+import {isHttpUrl} from "@/utils/is";
 
 export type LayoutMapKey = 'LAYOUT';
 const IFRAME = () => import('@/views/base/iframe/FrameBlank.vue');
@@ -18,26 +19,35 @@ let dynamicViewsModules: Record<string, () => Promise<Recordable>>;
 
 // Dynamic introduction
 function asyncImportRoute(routes: AppRouteRecordRaw[] | undefined) {
-  dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}');
-  if (!routes) return;
+  dynamicViewsModules = dynamicViewsModules || import.meta.glob('../../views/**/*.{vue,tsx}')
+  if (!routes)
+    return
   routes.forEach((item) => {
-    if (!item.component && item.meta?.frameSrc) {
-      item.component = 'IFRAME';
-    }
-    const { component, name } = item;
-    const { children } = item;
+    if (!item.component && item.meta?.frameSrc)
+      item.component = 'IFRAME'
+
+    const { component, name } = item
+    const { children } = item
     if (component) {
-      const layoutFound = LayoutMap.get(component.toUpperCase());
-      if (layoutFound) {
-        item.component = layoutFound;
-      } else {
-        item.component = dynamicImport(dynamicViewsModules, component as string);
-      }
-    } else if (name) {
-      item.component = getParentLayout();
+      const layoutFound = LayoutMap.get(component.toUpperCase())
+      if (layoutFound)
+        item.component = layoutFound
+      else
+        item.component = dynamicImport(dynamicViewsModules, component as string)
     }
-    children && asyncImportRoute(children);
-  });
+    else if (name) {
+      item.component = getParentLayout()
+    }
+    const meta = item.meta || {}
+    meta.title = item.name
+    meta.icon = item.icon
+    meta.hideMenu = !item.visible
+    meta.orderNo = item.sort
+    meta.ignoreKeepAlive = !item.keepAlive
+    item.meta = meta
+    item.name = item.name = item.componentName && item.componentName.length > 0 ? item.componentName : toCamelCase(item.path, true)
+    children && asyncImportRoute(children)
+  })
 }
 
 function dynamicImport(
@@ -71,33 +81,43 @@ function dynamicImport(
 // 将背景对象变成路由对象
 export function transformObjToRoute<T = AppRouteModule>(routeList: AppRouteModule[]): T[] {
   routeList.forEach((route) => {
-    const component = route.component as string;
-    if (component) {
-      if (component.toUpperCase() === 'LAYOUT') {
-        route.component = LayoutMap.get(component.toUpperCase());
-      } else {
-        route.children = [cloneDeep(route)];
-        route.component = LAYOUT;
+    if (isHttpUrl(route.path))
+      route.component = 'IFrame'
+    else if (route.children && route.parentId === 0)
+      route.component = 'LAYOUT'
+    else if (!route.children)
+      route.component = route.component as string
 
-        //某些情况下如果name如果没有值， 多个一级路由菜单会导致页面404
-        if (!route.name) {
-          warn('找不到菜单对应的name, 请检查数据!' + JSON.stringify(route));
-        }
-        route.name = `${route.name}Parent`;
-        // 重定向到当前路由，以防空白页面
-        route.redirect = route.path;
-        route.path = '';
-        const meta = route.meta || {};
-        meta.single = true;
-        meta.affix = false;
-        route.meta = meta;
+    const component = route.component as string
+    if (component) {
+      const meta = route.meta || {}
+      meta.hideMenu = !route.visible
+      meta.orderNo = route.sort
+      meta.ignoreKeepAlive = !route.keepAlive
+      meta.title = route.name
+      meta.icon = route.icon
+      if (component.toUpperCase() === 'LAYOUT') {
+        route.component = LayoutMap.get('LAYOUT'.toUpperCase())
       }
-    } else {
-      warn('请正确配置路由：' + route?.name + '的component属性');
+      else if (component.toUpperCase() === 'IFRAME') {
+        route.component = LayoutMap.get('IFRAME'.toUpperCase())
+      }
+      else {
+        // 处理顶级非目录路由
+        meta.single = true
+        route.children = [cloneDeep(route)]
+        route.component = LAYOUT
+        route.name = `${toCamelCase(route.path, true)}Parent`
+        route.path = ''
+      }
+      route.meta = meta
     }
-    route.children && asyncImportRoute(route.children);
-  });
-  return routeList as unknown as T[];
+    else {
+      warn(`请正确配置路由：${route?.name}的component属性`)
+    }
+    route.children && asyncImportRoute(route.children)
+  })
+  return routeList as unknown as T[]
 }
 
 /**
@@ -182,4 +202,17 @@ function isMultipleRoute(routeModule: AppRouteModule) {
     }
   }
   return flag;
+}
+
+function toCamelCase(str: string, upperCaseFirst: boolean) {
+  str = (str || '')
+    .replace(/-(.)/g, (group1: string) => {
+      return group1.toUpperCase()
+    })
+    .replaceAll('-', '')
+
+  if (upperCaseFirst && str)
+    str = str.charAt(0).toUpperCase() + str.slice(1)
+
+  return str
 }
