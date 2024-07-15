@@ -1,3 +1,62 @@
+## [2.11.5](https://github.com/vbenjs/vue-vben-admin/compare/v2.11.4...v2.11.5) (2024-05-31)
+
+### Bug Fixes
+
+- 路由参数存在非英文字符的情况下 会生成一个新的tab 而非返回原有tab ([#3832](https://github.com/vbenjs/vue-vben-admin/issues/3832)) ([1fee161](https://github.com/vbenjs/vue-vben-admin/commit/1fee161786fee79a06fb3b308374db098abd461a))
+- 修复表单重置后，页面变化了，但是由于异步问题导致表单内部的状态没有及时同步 ([#3882](https://github.com/vbenjs/vue-vben-admin/issues/3882)) ([5d36b1a](https://github.com/vbenjs/vue-vben-admin/commit/5d36b1a5604f72921bf09c16a78e5e287a1ba9d0))
+- **Application:** search menu now correctly lowercases input keys ([#3842](https://github.com/vbenjs/vue-vben-admin/issues/3842)) ([144cdd4](https://github.com/vbenjs/vue-vben-admin/commit/144cdd468092f9314abf766ffc2eccc66c00f08a))
+- **BasicForm:** 修复FormSchema中使用ifShow隐藏字段时，默认表单查询重置按钮位置偏移量计算问题 ([#3830](https://github.com/vbenjs/vue-vben-admin/issues/3830)) ([478802b](https://github.com/vbenjs/vue-vben-admin/commit/478802b42625f74e8e8f817dea343b0692e3d024))
+- **BasicForm:** setFieldsValue not work in form when use date comp ([#3819](https://github.com/vbenjs/vue-vben-admin/issues/3819)) ([7538c57](https://github.com/vbenjs/vue-vben-admin/commit/7538c57db755f221d201e3fdb5052ecf1f42fd9a))
+- **BasicForm:** when value is 0 or false resetFields is not work ([#3828](https://github.com/vbenjs/vue-vben-admin/issues/3828)) ([22052f1](https://github.com/vbenjs/vue-vben-admin/commit/22052f10f9264008dcd25f6efdd53d679585407a))
+- **Breadcrumb:** if hideBreadcrumb is true and hidden ([#3821](https://github.com/vbenjs/vue-vben-admin/issues/3821)) ([b66a0de](https://github.com/vbenjs/vue-vben-admin/commit/b66a0def98018fc1504573692a9b7a83b5c2d483))
+- **imgUpload:** disabled not effect in the form ([#3809](https://github.com/vbenjs/vue-vben-admin/issues/3809)) ([4348d21](https://github.com/vbenjs/vue-vben-admin/commit/4348d21da80a1e54c94fb9528617b29090701080))
+- **Loading:** 处理v-loading指令和useLoading的内存泄露 ([#3861](https://github.com/vbenjs/vue-vben-admin/issues/3861)) ([bcd98ee](https://github.com/vbenjs/vue-vben-admin/commit/bcd98ee0672047aafebdd504ef0ecc630b5068da))
+- **loading:** useLoading is not working as expected ([#3877](https://github.com/vbenjs/vue-vben-admin/issues/3877)) ([c89417f](https://github.com/vbenjs/vue-vben-admin/commit/c89417f523bf4c7e2329d943796c3dd92c066d3a))
+- **useDataSource:** state mutations in computed getters should be avoided ([#3859](https://github.com/vbenjs/vue-vben-admin/issues/3859)) ([fee8081](https://github.com/vbenjs/vue-vben-admin/commit/fee808198e5c2038424a5f5b1da41b11d16d1508))
+
+### Features
+
+- add devtools plugin instead of inspector plugin ([#3856](https://github.com/vbenjs/vue-vben-admin/issues/3856)) ([e69dd1e](https://github.com/vbenjs/vue-vben-admin/commit/e69dd1e223a2e817805739f11823092992d14ae1))
+- **BasicForm:** add prefix slot for schema ([#3840](https://github.com/vbenjs/vue-vben-admin/issues/3840)) ([265627f](https://github.com/vbenjs/vue-vben-admin/commit/265627fcc8a197861aea2f04641f457548180177))
+- **codeEditor:** add type and config && add use case ([#3829](https://github.com/vbenjs/vue-vben-admin/issues/3829)) ([0ee7211](https://github.com/vbenjs/vue-vben-admin/commit/0ee721183bf52c4d1239a7966cc76f2150b43b13))
+- **Demo:** add ScreenShot page demo ([#3826](https://github.com/vbenjs/vue-vben-admin/issues/3826)) ([5a2d742](https://github.com/vbenjs/vue-vben-admin/commit/5a2d74249e9e9a9631f3f43e2249b7ccc13f6da4))
+- **form:** add valueFormat for schema ([#3873](https://github.com/vbenjs/vue-vben-admin/issues/3873)) ([0bc01d8](https://github.com/vbenjs/vue-vben-admin/commit/0bc01d8528fc11904628974799ab44180e3e3314))
+
+### Performance Improvements
+
+- **BasicForm:** fix invaild defaultValue && split-setdefault-setvalue ([#3815](https://github.com/vbenjs/vue-vben-admin/issues/3815)) ([88e77db](https://github.com/vbenjs/vue-vben-admin/commit/88e77dbf994f594bc31189b896deab4be18351b8))
+- **form->util:** duplicate judge ([#3865](https://github.com/vbenjs/vue-vben-admin/issues/3865)) ([dcba0ca](https://github.com/vbenjs/vue-vben-admin/commit/dcba0ca837a0f72beaa09ff394fa9b6ff465dec1))
+- **menu->search:** highlight match chars when search menu ([#3880](https://github.com/vbenjs/vue-vben-admin/issues/3880)) ([d5fed8a](https://github.com/vbenjs/vue-vben-admin/commit/d5fed8a47c031f6f228ca41ed29c0f9aaf05f623))
+
+## [2.11.4](https://github.com/vbenjs/vue-vben-admin/compare/v2.11.3...v2.11.4) (2024-05-06)
+
+### Bug Fixes
+
+- **BasicForm:** 修复 SetFieldsValue 设置值时，会将 Number 类型的值转为 string ([#3802](https://github.com/vbenjs/vue-vben-admin/issues/3802)) ([08a1f7b](https://github.com/vbenjs/vue-vben-admin/commit/08a1f7b682114bdf758ea9dcd4b84daea0d5f196))
+- **breadcrumb:** if hideChildrenInmenu is true & hidden dropdown-menu ([#3807](https://github.com/vbenjs/vue-vben-admin/issues/3807)) ([2af93c9](https://github.com/vbenjs/vue-vben-admin/commit/2af93c9f5307ffdbb29653303177b2c8631e789a))
+- **docker:** update node version of dockerfile ([#3788](https://github.com/vbenjs/vue-vben-admin/issues/3788)) ([338d077](https://github.com/vbenjs/vue-vben-admin/commit/338d077ab3669ef116e7406c586fe2cb59952022))
+- **imgupload:** resultField causing with error display && setField uncertain ([#3798](https://github.com/vbenjs/vue-vben-admin/issues/3798)) ([06018ad](https://github.com/vbenjs/vue-vben-admin/commit/06018add798a6c23ebbfa91a3f4d625c2a57e458))
+
+### Features
+
+- **upload->previewColumns:** Adapt functions && chore upload demo ([#3799](https://github.com/vbenjs/vue-vben-admin/issues/3799)) ([29ef0d3](https://github.com/vbenjs/vue-vben-admin/commit/29ef0d39157957146015e1b914c26d2b6d1bf25e))
+
+### Performance Improvements
+
+- **util:** remove handleInputNumberValue ([#3806](https://github.com/vbenjs/vue-vben-admin/issues/3806)) ([ba5b8f8](https://github.com/vbenjs/vue-vben-admin/commit/ba5b8f8506bb9d052ce2705653f255f0401963e8))
+
+## [2.11.3](https://github.com/vbenjs/vue-vben-admin/compare/v2.11.2...v2.11.3) (2024-04-24)
+
+### Bug Fixes
+
+- **deps:** lock vue version to 3.4.23 ([#3785](https://github.com/vbenjs/vue-vben-admin/issues/3785)) ([2f655c2](https://github.com/vbenjs/vue-vben-admin/commit/2f655c2127753c0cde1cb29834314e961ce0930e)), closes [#3783](https://github.com/vbenjs/vue-vben-admin/issues/3783)
+- **upload:** disabled prop not effect to upload in the form ([#3780](https://github.com/vbenjs/vue-vben-admin/issues/3780)) ([69a6e90](https://github.com/vbenjs/vue-vben-admin/commit/69a6e9023ef80a5504178d0887119f8e7bbd5113))
+
+### Features
+
+- **BasicForm->Components:** add beforeFetch & afterFetch to apicomp && perf the code ([#3786](https://github.com/vbenjs/vue-vben-admin/issues/3786)) ([7ae2ec0](https://github.com/vbenjs/vue-vben-admin/commit/7ae2ec03a773c2223feabbd1e341e90f012f8b7e))
+- **demo:** use Tour component replace dirverjs ([#3777](https://github.com/vbenjs/vue-vben-admin/issues/3777)) ([49c4dc6](https://github.com/vbenjs/vue-vben-admin/commit/49c4dc646a9d123527577f02ee0d92865da9988e))
+
 ## [2.11.2](https://github.com/vbenjs/vue-vben-admin/compare/v2.11.1...v2.11.2) (2024-04-23)
 
 ### Bug Fixes

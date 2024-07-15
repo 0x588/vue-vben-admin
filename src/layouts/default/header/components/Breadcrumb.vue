@@ -10,7 +10,7 @@
           <router-link v-else to="" @click="handleClick(routeItem)">
             {{ t((routeItem.meta.title || routeItem.name) as string) }}
           </router-link>
-          <template v-if="routeItem.children" #overlay>
+          <template v-if="routeItem.children && !routeItem.meta?.hideChildrenInMenu" #overlay>
             <Menu>
               <template v-for="childItem in routeItem.children" :key="childItem.name">
                 <MenuItem>
@@ -91,7 +91,7 @@
 
     const breadcrumbList = filterItem(matched);
 
-    if (currentRoute.value.meta?.currentActiveMenu) {
+    if (currentRoute.value.meta?.currentActiveMenu && !currentRoute.value.meta?.hideBreadcrumb) {
       breadcrumbList.push({
         ...currentRoute.value,
         name: currentRoute.value.meta?.title || currentRoute.value.name,
@@ -131,7 +131,6 @@
   }
 
   function handleClick(route) {
-    console.log(route);
     const { children, redirect, meta } = route;
 
     if (children?.length && !redirect) {
