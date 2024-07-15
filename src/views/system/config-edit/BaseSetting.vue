@@ -79,6 +79,10 @@ onMounted(async () => {
             },
           });
         }
+      } else if (cfg.type == 'DatePicker' || cfg.type == 'TimePicker') {
+        schema.componentProps = {
+          valueFormat: 'YYYY-MM-DD HH:mm:ss',
+        }
       }
       await  appendSchemaByField(
         schema,
@@ -87,9 +91,9 @@ onMounted(async () => {
       if (cfg?.value && cfg.type !== 'ImageUpload'  && cfg.type !== 'CheckboxGroup') {
         obj[cfg.name] = cfg.value.data
       } else if (cfg?.value && cfg.type === 'CheckboxGroup') {
-        obj[cfg.name] = JSON.parse(cfg.value.data)
+         obj[cfg.name] = JSON.parse(cfg.value.data)
       } else if (cfg?.value && cfg.type === 'ImageUpload') {
-        obj[cfg.name] = cfg.value.data
+        obj[cfg.name] = JSON.parse(cfg.value.data)
       }
     }
   }
